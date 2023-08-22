@@ -12,6 +12,8 @@
 
             int intentos = 0;
 
+            int numeroIngresado;
+
             do
             {
 
@@ -19,39 +21,42 @@
 
                 Console.Write(">> ");
 
-                string numero = Console.ReadLine();
-
                 try
                 {
-                    int numeroIngresado = Int32.Parse(numero);
-
-                    if (numeroIngresado > numeroRandom)
-                    {
-                        Console.WriteLine("Muy alto! El numero a adivinar es menor");
-                        intentos++;
-                    }
-
-                    else if (numeroIngresado < numeroRandom)
-                    {
-                        Console.WriteLine("Muy bajo! El numero a adivinar es mayor");
-                        intentos++;
-                    }
-
-                    else
-                    {
-                        ganaste = true;
-                        intentos++;
-                    }
-
+                    numeroIngresado = Int32.Parse(Console.ReadLine());
                 }
-                catch (Exception ex)
+                catch (Exception ex) when (ex.GetType() != typeof(FormatException))
                 {
-                    Console.WriteLine($"Ha ocurrido un error: { ex.Message }");   
+                    Console.WriteLine($"Ha ocurrido un error: has introducido datos incorrectos. Se tomara como valor ingresado al número 0");
+                    numeroIngresado = 0;
+                }
+                catch(FormatException)
+                {
+                    Console.WriteLine("Ha ocurrido un error. Has introducido texto. Se tomara como valor ingresado al número 0");
+                    numeroIngresado = 0;
+                }
+                
+                if (numeroIngresado > numeroRandom)
+                {
+                    Console.WriteLine("Muy alto! El número a adivinar es menor");
+                    intentos++;
+                }
+
+                else if (numeroIngresado < numeroRandom)
+                {
+                    Console.WriteLine("Muy bajo! El número a adivinar es mayor");
+                    intentos++;
+                }
+
+                else
+                {
+                    ganaste = true;
+                    intentos++;
                 }
 
             } while (!ganaste);
 
-            Console.WriteLine($"Adivinaste! lograste adivinar el numero {numeroRandom} en {intentos} intentos");
+            Console.WriteLine($"Adivinaste! lograste adivinar el número {numeroRandom} en {intentos} intentos");
 
         }
     }
